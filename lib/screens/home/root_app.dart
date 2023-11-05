@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sikucing/screens/favoritescreen.dart';
 import 'package:sikucing/screens/homescreen.dart';
+import 'package:sikucing/screens/openaiscreen.dart';
 import 'package:sikucing/theme/color.dart';
 import 'package:sikucing/utils/constant.dart';
 import 'package:sikucing/widgets/bottombar_item.dart';
@@ -22,20 +24,12 @@ class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
     {
       "icon": "assets/home/heart-border.svg",
       "active_icon": "assets/home/heart.svg",
-      "page": Container(
-        child: Center(
-          child: Text("Favorite susah cuy"),
-        ),
-      ),
+      "page": FavoriteScreen(),
     },
     {
       "icon": "assets/home/pet-border.svg",
       "active_icon": "assets/home/pet.svg",
-      "page": Container(
-        child: Center(
-          child: Text("AI About Cat"),
-        ),
-      ),
+      "page": AboutCatsPage(),
     },
   ];
 

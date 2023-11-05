@@ -7,7 +7,7 @@ import 'package:sikucing/services/cat_service.dart';
 import 'package:sikucing/theme/color.dart';
 import 'package:sikucing/widgets/category_item.dart';
 import 'package:sikucing/widgets/cat_item.dart';
-import '../utils/data.dart';
+import '../../utils/data.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -165,23 +165,40 @@ class _HomeScreenState extends State<HomeScreen> {
         } else if (snapshot.hasData) {
           final catsData = snapshot.data;
 
-          if (catsData!.length == 1) {
-            return CatItem(data: catsData[0]);
-          } else {
-            double cardHeight = 400;
-            return CarouselSlider.builder(
-              options: CarouselOptions(
-                height: cardHeight,
-                enlargeCenterPage: true,
-                disableCenter: true,
-                viewportFraction: 1,
-              ),
-              itemCount: catsData.length,
-              itemBuilder: (context, index, realIndex) {
-                return CatItem(data: catsData[index]);
-              },
-            );
+          if (catsData!.isEmpty) {
+            return Center(child: Text('No cats available.'));
           }
+
+          List<CatModel> filteredCats;
+
+          if (_selectedCategory == 0) {
+            filteredCats = catsData;
+          } else {
+            final selectedCategory =
+                categories[_selectedCategory - 0]["name"].toLowerCase();
+            filteredCats = catsData
+                .where((cat) =>
+                    cat.categories.toLowerCase().contains(selectedCategory))
+                .toList();
+          }
+
+          if (filteredCats.isEmpty) {
+            return Center(child: Text('No cats available in this category.'));
+          }
+
+          double cardHeight = 400;
+          return CarouselSlider.builder(
+            options: CarouselOptions(
+              height: cardHeight,
+              enlargeCenterPage: true,
+              disableCenter: true,
+              viewportFraction: 1,
+            ),
+            itemCount: filteredCats.length,
+            itemBuilder: (context, index, realIndex) {
+              return CatItem(data: filteredCats[index]);
+            },
+          );
         } else {
           return Text('No data available.');
         }

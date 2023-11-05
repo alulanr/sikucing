@@ -6,7 +6,7 @@ class CatModel {
   String age;
   String city;
   String categories;
-  bool? isFavorite;
+  bool isFavorited;
   String avatar;
 
   CatModel({
@@ -17,7 +17,7 @@ class CatModel {
     required this.age,
     required this.city,
     required this.categories,
-    this.isFavorite,
+    required this.isFavorited,
     required this.avatar,
   });
 
@@ -30,8 +30,7 @@ class CatModel {
       age: json["age"] as String,
       city: json["city"] as String,
       categories: json["categories"] as String,
-      isFavorite:
-          json["isFavorite"] == null ? false : json["isFavorite"] as bool,
+      isFavorited: json["is_favorited"] == 1,
       avatar: json["avatar"],
     );
   }
@@ -45,7 +44,7 @@ class CatModel {
       "age": age,
       "city": city,
       "categories": categories,
-      "isFavorite": isFavorite,
+      "is_favorited": false,
       "avatar": avatar,
     };
   }

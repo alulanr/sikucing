@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import 'package:provider/provider.dart';
 import 'package:sikucing/theme/color.dart';
-import 'package:sikucing/widgets/favorite_box.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../provider/favorite_provider.dart';
 import 'custom_image.dart';
 
 class CatItem extends StatelessWidget {
   const CatItem({
     Key? key,
-    this.data,
+    required this.data,
     this.width = 350,
     this.height = 400,
     this.radius = 40,
     this.onTap,
     this.onFavoriteTap,
   }) : super(key: key);
-  
+
   final data;
   final double width;
   final double height;
@@ -55,7 +56,7 @@ class CatItem extends StatelessWidget {
       opacity: 0.15,
       child: Container(
         width: width,
-        height: 110,
+        height: 140,
         padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
         decoration: BoxDecoration(
           color: Colors.transparent,
@@ -69,24 +70,22 @@ class CatItem extends StatelessWidget {
             ),
           ],
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildInfo(),
-              SizedBox(
-                height: 5,
-              ),
-              _buildLocation(),
-              SizedBox(
-                height: 15,
-              ),
-              _buildAttributes(),
-              SizedBox(
-                height: 15,
-              ),
-            ],
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildInfo(),
+            SizedBox(
+              height: 5,
+            ),
+            _buildLocation(),
+            SizedBox(
+              height: 15,
+            ),
+            _buildAttributes(),
+            SizedBox(
+              height: 15,
+            ),
+          ],
         ),
       ),
     );
@@ -119,8 +118,19 @@ class CatItem extends StatelessWidget {
             ),
           ),
         ),
-        FavoriteBox(
+        GestureDetector(
           onTap: onFavoriteTap,
+          child: Consumer<FavoriteProvider>(
+            builder: (context, favoriteProvider, child) {
+              return Icon(
+                favoriteProvider.getFavoriteCats().contains(data.id)
+                    ? Icons.favorite
+                    : Icons.favorite_border,
+                color: Colors.white,
+                size: 20,
+              );
+            },
+          ),
         ),
         IconButton(
           onPressed: () {
